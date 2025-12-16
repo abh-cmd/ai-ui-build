@@ -1,0 +1,25 @@
+============================================================
+PHASE 10.3.1: PERFORMANCE PROFILING REPORT
+============================================================
+
+AGGREGATE STATISTICS
+============================================================
+Total Runs: 10
+Success Rate: 0.0%
+Rollbacks Triggered: 7
+
+TIMING ANALYSIS
+============================================================
+Total Time: 17.15ms
+Average Time/Command: 1.72ms
+Max Time/Command: 5.92ms
+Min Time/Command: 0.09ms
+
+STAGE BREAKDOWN (AVERAGE)
+============================================================
+Decompose: 0.27ms
+Execute:   1.38ms
+Serialize: 0.07ms
+
+IDENTIFIED BOTTLENECK: execute
+============================================================

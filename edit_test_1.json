@@ -1,0 +1,75 @@
+{
+  "command": "Make the CTA bigger",
+  "blueprint": {
+    "screen_id": "storefront",
+    "screen_type": "storefront",
+    "orientation": "portrait",
+    "tokens": {
+      "base_spacing": 16,
+      "primary_color": "#3B82F6",
+      "accent_color": "#F59E0B",
+      "font_scale": {
+        "heading": 1.5,
+        "body": 1
+      },
+      "border_radius": "8px"
+    },
+    "components": [
+      {
+        "id": "header_1",
+        "type": "header",
+        "bbox": [0, 0, 375, 80],
+        "text": "My Store",
+        "role": "hero",
+        "confidence": 0.95,
+        "visual": {
+          "bg_color": "#3B82F6",
+          "text_color": "#FFFFFF"
+        }
+      },
+      {
+        "id": "product_card_1",
+        "type": "product_card",
+        "bbox": [12, 100, 363, 280],
+        "text": "Product 1",
+        "role": "content",
+        "confidence": 0.92,
+        "visual": {
+          "image_url": "/placeholder.jpg",
+          "aspect_ratio": 1,
+          "price": "$29.99"
+        }
+      },
+      {
+        "id": "product_card_2",
+        "type": "product_card",
+        "bbox": [12, 300, 363, 480],
+        "text": "Product 2",
+        "role": "content",
+        "confidence": 0.9,
+        "visual": {
+          "image_url": "/placeholder.jpg",
+          "aspect_ratio": 1,
+          "price": "$39.99"
+        }
+      },
+      {
+        "id": "cta_button",
+        "type": "button",
+        "bbox": [12, 500, 363, 560],
+        "text": "Shop Now",
+        "role": "cta",
+        "confidence": 0.94,
+        "visual": {
+          "bg_color": "#F59E0B",
+          "text_color": "#000000",
+          "height": 44
+        }
+      }
+    ],
+    "meta": {
+      "source": "sketch_upload",
+      "vision_confidence": 0.92
+    }
+  }
+}
