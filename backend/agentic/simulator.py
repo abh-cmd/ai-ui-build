@@ -194,7 +194,7 @@ class Simulator:
         ok = True
         
         valid_types = ["navbar", "button", "product", "text", "heading", "container", "card", "link", "image"]
-        valid_roles = ["nav", "cta", "content", "hero", "footer", None]
+        valid_roles = ["nav", "header", "cta", "content", "hero", "footer", None]
         
         components = blueprint.get("components", [])
         
