@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import BuilderLayout from './components/BuilderLayout';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import EditorPage from './pages/EditorPage';
 
 function App() {
-    const [blueprint, setBlueprint] = useState(null);
-    const [generatedFiles, setGeneratedFiles] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
     return (
-        <BuilderLayout 
-            blueprint={blueprint}
-            setBlueprint={setBlueprint}
-            generatedFiles={generatedFiles}
-            setGeneratedFiles={setGeneratedFiles}
-            loading={loading}
-            setLoading={setLoading}
-            error={error}
-            setError={setError}
-        />
+        <BrowserRouter>
+            <Routes>
+                {/* Default redirect to editor/home */}
+                <Route path="/" element={<Navigate to="/editor/home" replace />} />
+
+                {/* Editor Route capturing the pageId */}
+                <Route path="/editor/:pageId" element={<EditorPage />} />
+
+                {/* Catch-all redirect */}
+                <Route path="*" element={<Navigate to="/editor/home" replace />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 
