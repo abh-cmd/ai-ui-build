@@ -6,12 +6,13 @@ INTENT → PLAN → PATCH → SIMULATE → VERIFY → APPLY → EXPLAIN
 The heart of Phase 11. Deterministic, safe, production-ready.
 """
 
-from typing import Dict, Any, Tuple, Optional
+from typing import Dict, Any, Tuple, Optional, List
 import copy
 import json
 from datetime import datetime
 
-from .intent_graph import IntentGraph
+from .intent_graph import IntentGraph, Intent, IntentType
+from .intent_parser_enhanced import CompoundIntentParser
 from .planner import Planner
 from .patch_generator import PatchGenerator
 from .simulator import Simulator
@@ -25,6 +26,7 @@ class AgenticAgent:
     
     def __init__(self):
         self.intent_graph = IntentGraph()
+        self.compound_parser = CompoundIntentParser()  # Phase B: Enhanced parser
         self.planner = Planner()
         self.patch_generator = PatchGenerator()
         self.simulator = Simulator()
@@ -45,14 +47,24 @@ class AgenticAgent:
         """
         try:
             # STEP 1: INTENT — Parse command into structured intents
+            # Try Phase 11 basic parser first, then fall back to Phase B enhanced parser
             intents = self.intent_graph.parse(command, blueprint)
+            used_phase_b = False
             
             if not intents:
-                return self._error_response(
-                    "Could not understand command",
-                    command,
-                    "No intents extracted"
-                )
+                # Fallback to Phase B (enhanced compound intent parser)
+                compound_result = self.compound_parser.parse_compound(command)
+                
+                if compound_result.intents and compound_result.combined_confidence > 0.0:
+                    # Convert Phase B ParsedIntent to Phase 11 Intent format
+                    intents = self._convert_phase_b_intents(compound_result.intents)
+                    used_phase_b = True
+                else:
+                    return self._error_response(
+                        "Could not understand command",
+                        command,
+                        "No intents extracted (Phase 11 + Phase B)"
+                    )
             
             # STEP 2: PLAN — Convert intents to execution plan
             plan = self.planner.plan(intents)
@@ -235,6 +247,43 @@ class AgenticAgent:
         
         # All results should be identical
         return all(r == results[0] for r in results)
+    
+    def _convert_phase_b_intents(self, phase_b_intents: List) -> List[Intent]:
+        """
+        Convert Phase B ParsedIntent list to Phase 11 Intent format.
+        
+        Phase B intents have: type (str), value, target, confidence
+        Phase 11 intents have: type (IntentType enum), value, target, confidence, params
+        """
+        converted = []
+        
+        intent_type_map = {
+            "RESIZE": IntentType.RESIZE,
+            "COLOR": IntentType.COLOR,
+            "ALIGN": IntentType.ALIGN,
+            "TEXT": IntentType.TEXT,
+            "STYLE": IntentType.STYLE,
+            "POSITION": IntentType.POSITION,
+            "VISIBILITY": IntentType.VISIBILITY,
+            "DELETE": IntentType.DELETE,
+            "CREATE": IntentType.CREATE,
+        }
+        
+        for parsed_intent in phase_b_intents:
+            # Phase B uses uppercase type strings like "RESIZE", "COLOR", etc
+            intent_type_str = getattr(parsed_intent, 'type', 'RESIZE').upper()
+            intent_type = intent_type_map.get(intent_type_str, IntentType.RESIZE)
+            
+            converted_intent = Intent(
+                type=intent_type,
+                target=getattr(parsed_intent, 'target', None),
+                value=getattr(parsed_intent, 'value', None),
+                confidence=getattr(parsed_intent, 'confidence', 0.9),
+                params={}
+            )
+            converted.append(converted_intent)
+        
+        return converted
     
     def get_capabilities(self) -> Dict[str, Any]:
         """Return capability information."""
