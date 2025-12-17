@@ -161,24 +161,30 @@ class Simulator:
         return ok, warnings
     
     def _check_tokens(self, blueprint: Dict[str, Any]) -> tuple[bool, List[str]]:
-        """Check design token validity."""
+        """Check design token validity (warnings only, not hard failures)."""
         warnings: List[str] = []
         ok = True
         
         tokens = blueprint.get("tokens", {})
         
-        # Check required tokens
-        required_tokens = ["primary_color", "base_spacing"]
-        for token in required_tokens:
-            if token not in tokens:
-                warnings.append(f"Missing required token: {token}")
-                ok = False
+        # Tokens are optional - blueprints might have inline styles instead
+        if not tokens:
+            warnings.append("No design tokens defined (using inline styles instead)")
+            return ok, warnings
         
-        # Check base_spacing is multiple of 8
-        base_spacing = tokens.get("base_spacing", 0)
-        if base_spacing % 8 != 0:
-            warnings.append(f"base_spacing ({base_spacing}) not multiple of 8")
-            ok = False
+        # Check for recommended tokens (but don't fail if missing)
+        recommended_tokens = ["primary_color", "base_spacing"]
+        for token in recommended_tokens:
+            if token not in tokens:
+                warnings.append(f"Missing recommended token: {token}")
+                # Don't set ok=False - optional tokens
+        
+        # Check base_spacing if it exists
+        base_spacing = tokens.get("base_spacing")
+        if base_spacing is not None and isinstance(base_spacing, (int, float)):
+            if base_spacing % 8 != 0:
+                warnings.append(f"base_spacing ({base_spacing}) not multiple of 8 (recommendation)")
+                # Don't set ok=False - spacing is a best practice, not requirement
         
         return ok, warnings
     

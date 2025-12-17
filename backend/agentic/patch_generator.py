@@ -141,11 +141,20 @@ class PatchGenerator:
                     
                     patches.append(JSONPatch(op="replace", path=path, value=hex_color))
         else:
-            # Apply to tokens
+            # Apply to tokens (primary token colors) OR first button (generic colors)
             if intent.value in ["primary", "accent"]:
+                # Token-level colors (e.g., "Make it primary")
                 token_key = f"{intent.value}_color"
                 path = f"/tokens/{token_key}"
                 patches.append(JSONPatch(op="replace", path=path, value=hex_color))
+            else:
+                # Generic colors (e.g., "Make it red") - apply to first button
+                buttons = [c for c in blueprint.get("components", []) if c.get("type") == "button"]
+                if buttons:
+                    # Apply to first button's text color
+                    idx = blueprint.get("components", []).index(buttons[0])
+                    path = f"/components/{idx}/visual/color"
+                    patches.append(JSONPatch(op="replace", path=path, value=hex_color))
         
         return patches
     

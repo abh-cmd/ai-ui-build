@@ -119,13 +119,16 @@ class Verifier:
         errors: List[str] = []
         warnings: List[str] = []
         
-        # Required token fields
-        required_tokens = ["primary_color", "base_spacing"]
+        # Token fields are optional (blueprints can use inline styles)
+        # But if tokens exist, recommend standard tokens
         tokens = blueprint.get("tokens", {})
-        
-        for token in required_tokens:
-            if token not in tokens:
-                errors.append(f"Missing required token: {token}")
+        if tokens:
+            recommended_tokens = ["primary_color", "base_spacing"]
+            for token in recommended_tokens:
+                if token not in tokens:
+                    warnings.append(f"Missing recommended token: {token}")
+        else:
+            warnings.append("No design tokens defined - using inline styles")
         
         # Components need basic fields
         components = blueprint.get("components", [])
