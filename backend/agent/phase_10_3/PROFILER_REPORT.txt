@@ -10,15 +10,15 @@ Rollbacks Triggered: 7
 
 TIMING ANALYSIS
 ============================================================
-Total Time: 17.15ms
-Average Time/Command: 1.72ms
-Max Time/Command: 5.92ms
+Total Time: 20.43ms
+Average Time/Command: 2.04ms
+Max Time/Command: 6.00ms
 Min Time/Command: 0.09ms
 
 STAGE BREAKDOWN (AVERAGE)
 ============================================================
-Decompose: 0.27ms
-Execute:   1.38ms
+Decompose: 0.25ms
+Execute:   1.72ms
 Serialize: 0.07ms
 
 IDENTIFIED BOTTLENECK: execute

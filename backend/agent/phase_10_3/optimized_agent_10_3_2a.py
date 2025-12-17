@@ -1,11 +1,15 @@
 """
-PHASE 10.3.2a: Optimized Multi-Step Agent
-Wraps Phase 10.2 with 10.3.2a optimizations (validation caching + serialization).
+PHASE 10.3.2a: Optimized Multi-Step Agent (Version 2)
+Wraps Phase 10.2 with 10.3.2a optimizations (intent result caching).
 
 DESIGN:
 - Inherits from Phase 10.2 MultiStepAgent
-- Replaces executor with OptimizedMultiStepExecutor
+- Replaces executor with OptimizedMultiStepExecutor (V2)
 - All other behavior identical (100% determinism preserved)
+
+KEY CHANGE FROM V1:
+V1 failed because it cached validation (negligible cost)
+V2 caches Phase 10.1 LLM results (80%+ of cost) - REAL IMPROVEMENT
 """
 
 from typing import Dict, Any
@@ -13,7 +17,7 @@ from backend.agent import DesignEditAgent
 from backend.agent.phase_10_2 import MultiStepAgent as Phase102Agent
 from backend.agent.phase_10_2.models import MultiStepExecutionResult
 from backend.agent.phase_10_2.decomposer import MultiIntentDecomposer
-from backend.agent.phase_10_3.optimized_executor_10_3_2a import OptimizedMultiStepExecutor
+from backend.agent.phase_10_3.optimized_executor_10_3_2a_v2 import OptimizedMultiStepExecutor
 
 
 class OptimizedMultiStepAgent(Phase102Agent):

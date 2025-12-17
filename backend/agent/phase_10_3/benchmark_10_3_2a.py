@@ -1,6 +1,11 @@
 """
-PHASE 10.3.2a: Benchmark & Comparison
-Compare Phase 10.2 baseline with 10.3.2a optimizations.
+PHASE 10.3.2a: Benchmark & Comparison (Version 2)
+Compare Phase 10.2 baseline with 10.3.2a V2 optimizations (intent result caching).
+
+KEY CHANGE:
+V1 benchmark showed -1.8% regression (validation caching was overhead)
+V2 focuses on real bottleneck: Phase 10.1 LLM calls
+Expected: 15-25% improvement
 """
 
 import time
