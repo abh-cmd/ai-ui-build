@@ -3,11 +3,11 @@ import BuilderSidebar from './BuilderSidebar';
 import CanvasArea from './CanvasArea';
 import PropertiesPanel from './PropertiesPanel';
 
-const BuilderLayout = () => {
+const BuilderLayout = ({ activePageId, blueprint }) => {
     return (
         <div className="flex h-screen w-full overflow-hidden bg-white">
-            <BuilderSidebar />
-            <CanvasArea />
+            <BuilderSidebar activePageId={activePageId} />
+            <CanvasArea activePageId={activePageId} blueprint={blueprint} />
             <PropertiesPanel />
         </div>
     );

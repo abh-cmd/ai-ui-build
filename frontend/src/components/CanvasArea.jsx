@@ -1,7 +1,7 @@
 import React from 'react';
 import GeneratedWebsite from './GeneratedWebsite';
 
-const CanvasArea = () => {
+const CanvasArea = ({ activePageId, blueprint }) => {
     return (
         <div className="flex-1 bg-slate-100 relative overflow-hidden flex flex-col">
             {/* Toolbar / Breadcrumbs placeholder */}
@@ -9,7 +9,7 @@ const CanvasArea = () => {
                 <div className="text-sm text-slate-500">
                     <span className="font-medium text-slate-900">Page</span>
                     <span className="mx-2">/</span>
-                    Home
+                    {blueprint?.name || activePageId}
                 </div>
                 <div className="text-xs font-mono text-slate-400">1280px x 800px</div>
             </div>
