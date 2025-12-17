@@ -29,12 +29,21 @@ const pageRegistry = {
             zoom: 100,
             pan: { x: 0, y: 0 }
         }
+    },
+    hardening: {
+        blueprint: { ...initialBlueprints.hardening },
+        history: [],
+        uiState: {
+            selection: null,
+            zoom: 100,
+            pan: { x: 0, y: 0 }
+        }
     }
 };
 
 /**
  * Retrieves the full state object for a specific page.
- * @param {string} pageId - The ID of the page (home, about, store)
+ * @param {string} pageId - The ID of the page (home, about, store, hardening)
  * @returns {object|null} - The page state object or null if not found
  */
 export const getPageState = (pageId) => {

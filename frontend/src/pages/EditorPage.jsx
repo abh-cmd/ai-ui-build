@@ -12,6 +12,17 @@ const EditorPage = () => {
     useEffect(() => {
         setIsLoading(true);
         const state = getPageState(pageId);
+
+        // DEV ONLY: Enforce immutability to catch side-effects in renderer
+        if (state && state.blueprint && import.meta.env.DEV) {
+            try {
+                // Shallow freeze top level to prevent accidental mutation of blueprint root
+                Object.freeze(state.blueprint);
+            } catch (e) {
+                console.warn("Could not freeze blueprint", e);
+            }
+        }
+
         setPageState(state);
         setIsLoading(false);
     }, [pageId]);

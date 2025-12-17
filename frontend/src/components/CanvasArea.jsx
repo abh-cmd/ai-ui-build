@@ -1,5 +1,5 @@
 import React from 'react';
-import GeneratedWebsite from './GeneratedWebsite';
+import BlueprintRenderer from '../renderer/BlueprintRenderer';
 
 const CanvasArea = ({ activePageId, blueprint }) => {
     return (
@@ -25,8 +25,8 @@ const CanvasArea = ({ activePageId, blueprint }) => {
                 />
 
                 {/* Preview Frame */}
-                <div className="bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-6xl aspect-[16/9] ring-1 ring-slate-900/5 transform transition-transform duration-200 origin-center scale-[0.9]">
-                    <GeneratedWebsite />
+                <div className="bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-6xl aspect-[16/9] ring-1 ring-slate-900/5 transform transition-transform duration-200 origin-center scale-[0.9] flex flex-col">
+                    <BlueprintRenderer blueprint={blueprint} />
                 </div>
             </div>
 
