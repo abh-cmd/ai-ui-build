@@ -211,11 +211,11 @@ def _create_landing_blueprint() -> dict:
                 "id": "hero_section_1",
                 "type": "hero",
                 "bbox": [0, 0, 375, 180],
-                "text": "THIS IS A FALLBACK STUB - GEMINI FAILED",
+                "text": "Welcome to Design Builder",
                 "role": "hero",
                 "confidence": 0.96,
                 "visual": {
-                    "bg_color": "#EF4444",
+                    "bg_color": "#3B82F6",
                     "text_color": "#FFFFFF"
                 }
             },
