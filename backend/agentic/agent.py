@@ -17,6 +17,7 @@ from .patch_generator import PatchGenerator
 from .simulator import Simulator
 from .verifier import Verifier
 from .explainer import Explainer
+from .confidence_scorer import ConfidenceScorer
 
 
 class AgenticAgent:
@@ -29,6 +30,7 @@ class AgenticAgent:
         self.simulator = Simulator()
         self.verifier = Verifier()
         self.explainer = Explainer()
+        self.confidence_scorer = ConfidenceScorer()
     
     def process(self, command: str, blueprint: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -113,12 +115,23 @@ class AgenticAgent:
                 simulation_result
             )
             
+            # STEP 7B: ENHANCED CONFIDENCE SCORING (Phase A)
+            confidence_report = self.confidence_scorer.score(
+                command,
+                intents,
+                blueprint,
+                modified,
+                patches,
+                simulation_result,
+                verification_result
+            )
+            
             # SUCCESS — Return response
             return {
                 "modified_blueprint": modified,
                 "reasoning": explanation.reasoning,
                 "explanation": explanation.summary,
-                "confidence": explanation.confidence,
+                "confidence": confidence_report.final_score,
                 "success": True,
                 "details": {
                     "intents": [
@@ -133,7 +146,19 @@ class AgenticAgent:
                     "patches_applied": len(patches),
                     "plan_complexity": self.planner.estimate_complexity(intents),
                     "simulation_risk": simulation_result.risk_score,
-                    "warnings": simulation_result.warnings + verification_result.warnings
+                    "warnings": simulation_result.warnings + verification_result.warnings,
+                    "confidence_breakdown": {
+                        "stage_scores": [
+                            {
+                                "stage": s.stage.value,
+                                "score": s.score,
+                                "reason": s.reason
+                            }
+                            for s in confidence_report.stage_scores
+                        ],
+                        "penalties": [{"reason": r, "amount": a} for r, a in confidence_report.penalties],
+                        "boosts": [{"reason": r, "amount": a} for r, a in confidence_report.boosts],
+                    }
                 }
             }
         

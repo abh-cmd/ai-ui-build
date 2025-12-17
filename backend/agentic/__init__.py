@@ -17,6 +17,7 @@ from .patch_generator import PatchGenerator, JSONPatch
 from .simulator import Simulator, SimulationResult
 from .verifier import Verifier, VerificationResult
 from .explainer import Explainer
+from .confidence_scorer import ConfidenceScorer, ConfidenceReport, StageConfidence
 from .agent import AgenticAgent
 
 __all__ = [
